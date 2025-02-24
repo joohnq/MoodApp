@@ -30,7 +30,7 @@ jobs:
           echo "shouldRunAndroid=${{ contains(github.event.pull_request.labels.*.name, 'Android') }}" >> "$GITHUB_OUTPUT"
           echo "shouldRunIos=${{ contains(github.event.pull_request.labels.*.name, 'iOS') }}" >> "$GITHUB_OUTPUT"
           
-          if [ "$isFromMain" == "true" ] || [ "$isManual" == "true" ] || ([ ${{ github.event_name }} == pull_request ] && [ ${{ github.event.pull_request.draft }} == false ]); then
+          if [ ${{ github.event_name }} == workflow_dispatch ] || [ ${{ github.event_name }} == push ] || ([ ${{ github.event_name }} == pull_request ] && [ ${{ github.event.pull_request.draft }} == false ]); then
             exit 0
           else
             exit 1
@@ -62,28 +62,18 @@ jobs:
     needs: [ Build, UnitTests ]
     steps:
       - run: |
-          echo "Labels: ${{ join(github.event.pull_request.labels.*.name) }}"
-          echo "Build result: ${{ needs.Build.result }}"
-          echo "UnitTests result: ${{ needs.UnitTests.result }}"
-
-          if [ "${{ github.event_name }}" == "pull_request" ] && [ -z "${{ github.event.pull_request.labels.*.name }}" ] && [ "${{ github.event_name }}" != "workflow_dispatch" ]; then
-            echo "Skipping merge: No labels found."
+          if [ ${{ github.event_name }} == pull_request ] && [ ${{ join(github.event.pull_request.labels.*.name) == '' }} == true ]; then
             exit 1
-          fi
-
-          if [[ "${{ needs.Build.result }}" == "failure" ]] || [[ "${{ needs.UnitTests.result }}" == "failure" ]]; then
-            echo "Skipping merge: Build or UnitTests failed."
+          elif [ ${{ (contains(needs.Build.result, 'failure')) }} == true ] || [ ${{ (contains(needs.UnitTests.result, 'failure')) }} == true ]; then
             exit 1
+          else
+            exit 0
           fi
-
-          echo "All checks passed. Allowing merge."
-          exit 0
 
   Distribute:
     name: Distribute bundle to Google Play
     needs: [ Build, UnitTests ]
     runs-on: ubuntu-latest
-    if: needs.AllowMerge.result == 'success'  # Garante que só roda se AllowMerge passar
 
     steps:
       - name: Version Bump
