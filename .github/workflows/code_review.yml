@@ -150,7 +150,7 @@ jobs:
       - name: Version Bump
         uses: chkfung/android-version-actions@v1.2.3
         with:
-          gradlePath: app/build.gradle.kts
+          gradlePath: composeApp/build.gradle.kts
           versionCode: ${{ github.run_number }}
 
       - name: Assemble Release Bundle
@@ -159,7 +159,7 @@ jobs:
       - name: Sign Release
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: app/build/outputs/bundle/release
+          releaseDirectory: composeApp/build/outputs/bundle/release
           signingKeyBase64: ${{ secrets.ANDROID_KEYSTORE }}
           keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
           alias: ${{ secrets.ANDROID_DEVS_ALIAS }}
@@ -173,6 +173,6 @@ jobs:
         with:
           serviceAccountJson: service_account.json
           packageName: com.joohnq.moodapp
-          releaseFiles: app/build/outputs/bundle/release/Moodly-v${{ github.run_number }}-release.aab
+          releaseFiles: composeApp/build/outputs/bundle/release/Moodly-v${{ github.run_number }}-release.aab
           track: 'internal'
           status: 'completed'
