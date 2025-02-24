@@ -147,6 +147,9 @@ jobs:
           java-version: 17
           cache: 'gradle'
 
+      - name: Decode google-services.json
+        run: echo '${{ secrets.GOOGLE_SERVICES_JSON }}' > composeApp/google-services.json
+
       - name: Version Bump
         uses: chkfung/android-version-actions@v1.2.3
         with:
