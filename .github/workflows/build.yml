@@ -27,8 +27,6 @@ jobs:
       - name: Grant execute permissions for gradlew
         run: chmod +x gradlew
 
-      - run: ./gradlew :androidApp:assemble
-
   iOS:
     #    if: ${{ inputs.shouldRunKmp == 'true' || inputs.shouldRunIos == 'true' }}
     if: false
