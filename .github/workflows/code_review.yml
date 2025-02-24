@@ -70,7 +70,7 @@ jobs:
             exit 0
           fi
 
-  Distribute:
+  distribute:
     name: Distribute bundle to Google Play
     needs: [ Build, UnitTests ]
     runs-on: ubuntu-latest
@@ -104,4 +104,4 @@ jobs:
           packageName: com.joohnq.moodapp
           releaseFiles: composeApp/build/outputs/bundle/release/Mood-v${{ github.run_number }}-release.aab
           track: 'internal'
-          status: 'draft'
+          status: 'completed'
