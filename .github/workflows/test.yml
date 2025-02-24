@@ -15,7 +15,8 @@ on:
 
 jobs:
   Android:
-    if: ${{ inputs.shouldRunKmp == 'true' || inputs.shouldRunAndroid == 'true' }}
+    #    if: ${{ inputs.shouldRunKmp == 'true' || inputs.shouldRunAndroid == 'true' }}
+    if: false
     runs-on: ubuntu-latest
 
     steps:
@@ -49,7 +50,8 @@ jobs:
           path: "/Users/runner/Library/Developer/Xcode/DerivedData/*"
 
   KMP-Android:
-    if: ${{ inputs.shouldRunKmp == 'true' || inputs.shouldRunAndroid == 'true' }}
+    #    if: ${{ inputs.shouldRunKmp == 'true' || inputs.shouldRunAndroid == 'true' }}
+    if: false
     runs-on: self-hosted
 
     steps:

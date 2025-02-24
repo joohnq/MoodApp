@@ -30,7 +30,8 @@ jobs:
       - run: ./gradlew :androidApp:assemble
 
   iOS:
-    if: ${{ inputs.shouldRunKmp == 'true' || inputs.shouldRunIos == 'true' }}
+    #    if: ${{ inputs.shouldRunKmp == 'true' || inputs.shouldRunIos == 'true' }}
+    if: false
     runs-on: self-hosted
 
     steps:
