@@ -72,7 +72,7 @@ jobs:
 
   Distribute:
     name: Distribute bundle to Google Play
-    needs: AllowMerge
+    needs: [ Build, UnitTests ]
     runs-on: ubuntu-latest
 
     steps:
