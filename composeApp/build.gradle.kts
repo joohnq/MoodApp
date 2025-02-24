@@ -157,7 +157,7 @@ android {
     }
 
     base {
-        archivesName = "Mood-v${defaultConfig.versionCode}"
+        archivesName = "Moodly-v${defaultConfig.versionCode}"
     }
 
     compileOptions {

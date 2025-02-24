@@ -173,6 +173,6 @@ jobs:
         with:
           serviceAccountJson: service_account.json
           packageName: com.joohnq.moodapp
-          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          releaseFiles: app/build/outputs/bundle/release/Moodly-v${{ github.run_number }}-release.aab
           track: 'internal'
           status: 'completed'
