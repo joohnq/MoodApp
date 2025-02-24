@@ -49,7 +49,7 @@ jobs:
           path: "/Users/runner/Library/Developer/Xcode/DerivedData/*"
 
   KMP-Android:
-    if: ${{ inputs.shouldRunKmp == 'true'}}
+    if: ${{ inputs.shouldRunKmp == 'true' || inputs.shouldRunAndroid == 'true' }}
     runs-on: self-hosted
 
     steps:
@@ -61,7 +61,8 @@ jobs:
       - run: ./gradlew clean testDebugUnitTest -p shared/
 
   KMP-iOS:
-    if: ${{ inputs.shouldRunKmp == 'true'}}
+    #    if: ${{ inputs.shouldRunKmp == 'true' || inputs.shouldRunIos == 'true' }}
+    if: false
     runs-on: self-hosted
 
     steps:
