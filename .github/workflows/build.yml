@@ -19,10 +19,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Job set up
         uses: ./.github/actions/job-set-up
+
+      - name: Grant execute permissions for gradlew
+        run: chmod +x gradlew
 
       - run: ./gradlew :androidApp:assemble
 
