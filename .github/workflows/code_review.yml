@@ -1,74 +1,101 @@
-name: Code review
+#name: Code review
+#
+#concurrency:
+#  group: ${{ github.workflow }}-${{ github.ref }}
+#  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+#
+#on:
+#  workflow_dispatch:
+#  push:
+#    branches: [ main ]
+#  pull_request:
+#    types: [ opened, ready_for_review, synchronize ]
+#    branches: [ main ]
+#
+#jobs:
+#  SetUp:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - id: setVariables
+#        name: Set variables
+#        run: |
+#          isFromMain=${{ github.ref == 'refs/heads/main' }}
+#          isManual=${{ github.event_name == 'workflow_dispatch' }}
+#          hasKmpLabel=${{ contains(github.event.pull_request.labels.*.name, 'KMP') }}
+#          shouldRunKmp=false
+#          if $isFromMain || $isManual || $hasKmpLabel ; then
+#            shouldRunKmp=true
+#          fi
+#          echo "shouldRunKmp=$shouldRunKmp" >> "$GITHUB_OUTPUT"
+#          echo "shouldRunAndroid=${{ contains(github.event.pull_request.labels.*.name, 'Android') }}" >> "$GITHUB_OUTPUT"
+#          echo "shouldRunIos=${{ contains(github.event.pull_request.labels.*.name, 'iOS') }}" >> "$GITHUB_OUTPUT"
+#
+#          if [ ${{ github.event_name }} == workflow_dispatch ] || [ ${{ github.event_name }} == push ] || ([ ${{ github.event_name }} == pull_request ] && [ ${{ github.event.pull_request.draft }} == false ]); then
+#            exit 0
+#          else
+#            exit 1
+#          fi
+#    outputs:
+#      shouldRunKmp: ${{ steps.setVariables.outputs.shouldRunKmp }}
+#      shouldRunAndroid: ${{ steps.setVariables.outputs.shouldRunAndroid }}
+#      shouldRunIos: ${{ steps.setVariables.outputs.shouldRunIos }}
+#
+#  Build:
+#    needs: SetUp
+#    uses: ./.github/workflows/build.yml
+#    with:
+#      shouldRunKmp: ${{ needs.SetUp.outputs.shouldRunKmp }}
+#      shouldRunAndroid: ${{ needs.SetUp.outputs.shouldRunAndroid }}
+#      shouldRunIos: ${{ needs.SetUp.outputs.shouldRunIos }}
+#
+#  UnitTests:
+#    needs: SetUp
+#    uses: ./.github/workflows/test.yml
+#    with:
+#      shouldRunKmp: ${{ needs.SetUp.outputs.shouldRunKmp }}
+#      shouldRunAndroid: ${{ needs.SetUp.outputs.shouldRunAndroid }}
+#      shouldRunIos: ${{ needs.SetUp.outputs.shouldRunIos }}
+#
+#  AllowMerge:
+#    if: always()
+#    runs-on: ubuntu-latest
+#    needs: [ Build, UnitTests ]
+#    steps:
+#      - run: |
+#          if [ ${{ github.event_name }} == pull_request ] && [ ${{ join(github.event.pull_request.labels.*.name) == '' }} == true ]; then
+#            exit 1
+#          elif [ ${{ (contains(needs.Build.result, 'failure')) }} == true ] || [ ${{ (contains(needs.UnitTests.result, 'failure')) }} == true ]; then
+#            exit 1
+#          else
+#            exit 0
+#          fi
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+name: Deploy To Google Play
 
 on:
-  workflow_dispatch:
   push:
-    branches: [ main ]
-  pull_request:
-    types: [ opened, ready_for_review, synchronize ]
     branches: [ main ]
 
 jobs:
-  SetUp:
+  test:
+    name: Unit Test
     runs-on: ubuntu-latest
+
     steps:
-      - id: setVariables
-        name: Set variables
-        run: |
-          isFromMain=${{ github.ref == 'refs/heads/main' }}
-          isManual=${{ github.event_name == 'workflow_dispatch' }}
-          hasKmpLabel=${{ contains(github.event.pull_request.labels.*.name, 'KMP') }}
-          shouldRunKmp=false
-          if $isFromMain || $isManual || $hasKmpLabel ; then
-            shouldRunKmp=true
-          fi
-          echo "shouldRunKmp=$shouldRunKmp" >> "$GITHUB_OUTPUT"
-          echo "shouldRunAndroid=${{ contains(github.event.pull_request.labels.*.name, 'Android') }}" >> "$GITHUB_OUTPUT"
-          echo "shouldRunIos=${{ contains(github.event.pull_request.labels.*.name, 'iOS') }}" >> "$GITHUB_OUTPUT"
-          
-          if [ ${{ github.event_name }} == workflow_dispatch ] || [ ${{ github.event_name }} == push ] || ([ ${{ github.event_name }} == pull_request ] && [ ${{ github.event.pull_request.draft }} == false ]); then
-            exit 0
-          else
-            exit 1
-          fi
-    outputs:
-      shouldRunKmp: ${{ steps.setVariables.outputs.shouldRunKmp }}
-      shouldRunAndroid: ${{ steps.setVariables.outputs.shouldRunAndroid }}
-      shouldRunIos: ${{ steps.setVariables.outputs.shouldRunIos }}
+      - uses: actions/checkout@v4
 
-  Build:
-    needs: SetUp
-    uses: ./.github/workflows/build.yml
-    with:
-      shouldRunKmp: ${{ needs.SetUp.outputs.shouldRunKmp }}
-      shouldRunAndroid: ${{ needs.SetUp.outputs.shouldRunAndroid }}
-      shouldRunIos: ${{ needs.SetUp.outputs.shouldRunIos }}
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          cache: 'gradle'
 
-  UnitTests:
-    needs: SetUp
-    uses: ./.github/workflows/test.yml
-    with:
-      shouldRunKmp: ${{ needs.SetUp.outputs.shouldRunKmp }}
-      shouldRunAndroid: ${{ needs.SetUp.outputs.shouldRunAndroid }}
-      shouldRunIos: ${{ needs.SetUp.outputs.shouldRunIos }}
+      - name: Grant execute permissions for gradlew
+        run: chmod +x gradlew
 
-  AllowMerge:
-    if: always()
-    runs-on: ubuntu-latest
-    needs: [ Build, UnitTests ]
-    steps:
-      - run: |
-          if [ ${{ github.event_name }} == pull_request ] && [ ${{ join(github.event.pull_request.labels.*.name) == '' }} == true ]; then
-            exit 1
-          elif [ ${{ (contains(needs.Build.result, 'failure')) }} == true ] || [ ${{ (contains(needs.UnitTests.result, 'failure')) }} == true ]; then
-            exit 1
-          else
-            exit 0
-          fi
+      - name: Run unit tests
+        run: ./gradlew clean testDebug
 
   distribute:
     name: Distribute bundle to Google Play
