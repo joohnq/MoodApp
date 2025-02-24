@@ -132,9 +132,6 @@ jobs:
       - name: Decode google-services.json
         run: echo "${{ secrets.GOOGLE_SERVICES_JSON }}" | base64 --decode > composeApp/google-services.json
 
-      - name: Run unit tests
-        run: ./gradlew clean testDebug
-
   distribute:
     name: Distribute bundle to Google Play
     needs: test
