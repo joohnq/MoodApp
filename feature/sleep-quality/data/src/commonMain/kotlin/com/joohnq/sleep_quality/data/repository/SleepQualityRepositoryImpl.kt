@@ -49,7 +49,7 @@ class SleepQualityRepositoryImpl(
                 val res = sqliteExceptionMapper.map(e)
                 when (res.opResult) {
                     SqliteOperationResult.CONSTRAINT -> Result.failure(SleepQualityException.AlreadyBeenAddedToday)
-                    else -> Result.failure(Exception(res.cause?.message.toString()))
+                    else -> Result.failure(Exception(res.cause))
                 }
             }
         }

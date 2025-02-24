@@ -1,6 +1,10 @@
 package com.joohnq.auth.ui.presentation.user_name
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
 import com.joohnq.auth.ui.presentation.user_name.event.UserNameEvent
@@ -30,7 +34,7 @@ fun UserNameScreen(
 
     fun onError(error: String) {
         scope.launch {
-            snackBarState.showSnackbar(error.message.toString())
+            snackBarState.showSnackbar(error)
         }
     }
 

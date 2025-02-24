@@ -1,8 +1,17 @@
 package com.joohnq.security.ui.presentation.unlock
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,7 +24,7 @@ import com.joohnq.security.ui.components.PINCode
 import com.joohnq.security.ui.presentation.pin.viewmodel.PINIntent
 import com.joohnq.security.ui.presentation.pin.viewmodel.PINState
 import com.joohnq.security.ui.presentation.unlock.event.UnLockEvent
-import com.joohnq.shared_resources.*
+import com.joohnq.shared_resources.Res
 import com.joohnq.shared_resources.components.ContinueButton
 import com.joohnq.shared_resources.components.ErrorInfo
 import com.joohnq.shared_resources.components.TopBalloon
@@ -23,6 +32,11 @@ import com.joohnq.shared_resources.components.VerticalSpacer
 import com.joohnq.shared_resources.theme.Colors
 import com.joohnq.shared_resources.theme.PaddingModifier.Companion.paddingHorizontalMedium
 import com.joohnq.shared_resources.theme.TextStyles
+import com.joohnq.shared_resources.this_password_is_the_same_validation_method
+import com.joohnq.shared_resources.type_your_four_digit_pin_to_unlock_the_app
+import com.joohnq.shared_resources.use_device_password
+import com.joohnq.shared_resources.use_your_authentication_to_securely
+import com.joohnq.shared_resources.welcome_back
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)

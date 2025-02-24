@@ -89,7 +89,7 @@ class DashboardViewModel(
             ).anyError(
                 block = { error ->
                     viewModelScope.launch {
-                        _sideEffect.send(DashboardSideEffect.ShowError(error.message.toString()))
+                        _sideEffect.send(DashboardSideEffect.ShowError(error))
                     }
                 }
             )

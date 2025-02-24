@@ -1,4 +1,4 @@
-rootProject.name = "MoodApp"
+rootProject.name = "Moodly"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

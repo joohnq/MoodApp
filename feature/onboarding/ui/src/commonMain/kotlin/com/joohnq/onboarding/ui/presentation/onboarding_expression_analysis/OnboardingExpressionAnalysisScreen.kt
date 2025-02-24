@@ -124,16 +124,16 @@ fun OnboardingExpressionAnalysisScreen(
             Quad(stressSideEffect, sleepSideEffect, statsSideEffect, userSideEffect)
         }.collect { (stressSideEffect, sleepSideEffect, statsSideEffect, userSideEffect) ->
             if (stressSideEffect is StressLevelSideEffect.ShowError) {
-                onError(stressSideEffect.error.message.toString())
+                onError(stressSideEffect.error)
             }
             if (sleepSideEffect is SleepQualitySideEffect.ShowError) {
-                onError(sleepSideEffect.error.message.toString())
+                onError(sleepSideEffect.error)
             }
             if (statsSideEffect is MoodSideEffect.ShowError) {
-                onError(statsSideEffect.error.message.toString())
+                onError(statsSideEffect.error)
             }
             if (userSideEffect is UserSideEffect.ShowError) {
-                onError(userSideEffect.error.message.toString())
+                onError(userSideEffect.error)
             }
 
             if (stressSideEffect is StressLevelSideEffect.StressLevelAdded && sleepSideEffect is SleepQualitySideEffect.SleepQualityAdded && statsSideEffect is MoodSideEffect.StatsAdded && userSideEffect is UserSideEffect.UpdatedUser) {
