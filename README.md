@@ -1,8 +1,8 @@
-# MoodsApp
+# Moodly
 
 ## 📱 Sobre
 
-**MoodTrackerApp** é um aplicativo multiplataforma (Android e IOS) projetado para ajudar você a monitorar e entender seu **humor**, **nível de estresse** e **qualidade do sono**. Através de uma interface interativa e intuitiva, o app permite que o usuário registre seu **estado emocional diário**, registre observações pessoais e visualize seu progresso ao longo do tempo.
+**Moodly** é um aplicativo multiplataforma (Android e IOS) projetado para ajudar você a monitorar e entender seu **humor**, **nível de estresse** e **qualidade do sono**. Através de uma interface interativa e intuitiva, o app permite que o usuário registre seu **estado emocional diário**, registre observações pessoais e visualize seu progresso ao longo do tempo.
 
 <img width="1600" alt="Thumbnail Horizontal" src="https://github.com/user-attachments/assets/a2e457e1-f20b-436d-9e20-76c541e67230">
 
