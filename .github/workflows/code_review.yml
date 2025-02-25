@@ -168,13 +168,15 @@ jobs:
           alias: ${{ secrets.ANDROID_DEVS_ALIAS }}
           keyPassword: ${{ secrets.ANDROID_DEVS_ALIAS_PASSWORD }}
 
-      - name: Setup Authorization with Google Play Store
-        run: echo '${{ secrets.PLAY_AUTH_JSON }}' > service_account.json
+      - name: Show artifacts
+        run: |
+          ls composeApp/build/outputs/apk/release/
+          ls composeApp/build/outputs/bundle/release/
 
       - name: Deploy bundle to Google Play
         uses: r0adkll/upload-google-play@v1.1.3
         with:
-          serviceAccountJson: service_account.json
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_AUTH_JSON }}
           packageName: com.joohnq.moodapp
           releaseFiles: composeApp/build/outputs/bundle/release/Moodly-v${{ github.run_number }}-release.aab
           track: 'internal'
